@@ -8,11 +8,11 @@ export class Navbar extends Component {
   // static defaultProps = {
   //   active: "home",
   // };
-  // static propTypes = {
-  // active: PropTypes.string,
-  // };
-  constructor() {
-    super();
+  static propTypes = {
+    mode: PropTypes.bool,
+  };
+  constructor(props) {
+    super(props);
     this.state = {
       darkmode: false,
       homeActive: "",
@@ -25,8 +25,12 @@ export class Navbar extends Component {
       sportsActive: "",
       technologyActive: "",
     };
+
     // active = this.props.active;
   }
+  static defaultProps = {
+    mode: "light",
+  };
   clearClicks = () => {
     this.setState({ homeActive: "" });
     this.setState({ aboutActive: "" });
@@ -83,12 +87,20 @@ export class Navbar extends Component {
     this.setState({ technologyActive: "active" });
     console.log(this.state.active);
   };
+  //------------------------------
+  //  changeMode=()=>{
+  //    if
+  //  }
+  //------------------------------
+
   render() {
     // let { active } = this.props;
     console.log(this.state.active);
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <nav
+          className={`navbar navbar-expand-lg navbar-${this.props.mode} fixed-top bg-${this.props.mode}`}
+        >
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
               Khabarnama
@@ -200,12 +212,13 @@ export class Navbar extends Component {
                 className="form-check-input"
                 type="checkbox"
                 id="flexSwitchCheckDefault"
+                onClick={this.props.toggleMode}
               />
               <label
                 className="form-check-label"
                 htmlFor="flexSwitchCheckDefault"
               >
-                Default switch checkbox input
+                Darkmode/Lightmode
               </label>
             </div>
           </div>

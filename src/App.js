@@ -11,6 +11,20 @@ export default class App extends Component {
   // activeState()
   apiKey = process.env.REACT_APP_NEWS_API;
 
+  constructor() {
+    super();
+    this.state = { mode: "dark" };
+  }
+
+  toggleMode = () => {
+    if (this.mode === "light") {
+      this.setState({ mode: "dark" });
+      document.body.style.backgroundColor = "#4d4c97";
+    } else {
+      this.setState({ mode: "light" });
+    }
+  };
+
   state = {
     progress: 0,
   };
@@ -29,7 +43,7 @@ export default class App extends Component {
           progress={this.state.progress}
           // onLoaderFinished={() => setProgress(0)}
         />
-        <Navbar />
+        <Navbar mode={this.mode} toggleMode={this.toggleMode} />
         <Switch>
           <Route exact path="/">
             <News
