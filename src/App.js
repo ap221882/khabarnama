@@ -16,14 +16,16 @@ export default class App extends Component {
     this.state = { mode: "dark" };
   }
 
-  toggleMode = () => {
-    if (this.mode === "light") {
-      this.setState({ mode: "dark" });
-      document.body.style.backgroundColor = "#4d4c97";
-    } else {
-      this.setState({ mode: "light" });
-    }
-  };
+  // toggleMode = () => {
+  //   console.log(this.state.mode);
+  //   if (this.state.mode === "light") {
+  //     this.setState({ mode: "dark" });
+  //     document.body.style.backgroundColor = "#4d4c97";
+  //   } else if (this.state.mode === "dark") {
+  //     this.setState({ mode: "light" });
+  //     document.body.style.backgroundColor = "ffffff";
+  //   }
+  // };
 
   state = {
     progress: 0,
@@ -43,7 +45,8 @@ export default class App extends Component {
           progress={this.state.progress}
           // onLoaderFinished={() => setProgress(0)}
         />
-        <Navbar mode={this.mode} toggleMode={this.toggleMode} />
+        <Navbar />
+        {/*  // mode={this.mode} toggleMode={this.toggleMode} */}
         <Switch>
           <Route exact path="/">
             <News

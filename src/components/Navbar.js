@@ -8,9 +8,13 @@ export class Navbar extends Component {
   // static defaultProps = {
   //   active: "home",
   // };
+  // static defaultProps = {
+  //   mode: "dark",
+  // };
   static propTypes = {
-    mode: PropTypes.bool,
+    mode: PropTypes.string,
   };
+  componentDidUpdate;
   constructor(props) {
     super(props);
     this.state = {
@@ -24,13 +28,20 @@ export class Navbar extends Component {
       scienceActive: "",
       sportsActive: "",
       technologyActive: "",
+      modeWhichIs: this.props.mode,
     };
 
     // active = this.props.active;
   }
-  static defaultProps = {
-    mode: "light",
-  };
+  // toggleState = () => {
+  //   this.props.toggleMode();
+  //   if (this.props.mode === "dark") {
+  //     this.setState({ modeWhichIs: "dark" });
+  //   } else if (this.props.mode === "light") {
+  //     this.setState({ modeWhichIs: "light" });
+  //   }
+  // };
+
   clearClicks = () => {
     this.setState({ homeActive: "" });
     this.setState({ aboutActive: "" });
@@ -95,11 +106,13 @@ export class Navbar extends Component {
 
   render() {
     // let { active } = this.props;
-    console.log(this.state.active);
+    // console.log(this.state.active);
     return (
       <div>
+        {/* this.toggleState(); console.log({this.state.modeWhichIs}); */}
         <nav
-          className={`navbar navbar-expand-lg navbar-${this.props.mode} fixed-top bg-${this.props.mode}`}
+          className="navbar navbar-expand-lg navbar-dark fixed-top "
+          style={{ backgroundColor: "rgb(37 46 53)" }}
         >
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
@@ -207,12 +220,12 @@ export class Navbar extends Component {
                 </li>
               </ul>
             </div>
-            <div className="form-check form-switch text-light">
+            {/* <div className="form-check form-switch text-light">
               <input
                 className="form-check-input"
                 type="checkbox"
                 id="flexSwitchCheckDefault"
-                onClick={this.props.toggleMode}
+                // onClick={this.toggleState}
               />
               <label
                 className="form-check-label"
@@ -220,7 +233,7 @@ export class Navbar extends Component {
               >
                 Darkmode/Lightmode
               </label>
-            </div>
+            </div> */}
           </div>
         </nav>
       </div>

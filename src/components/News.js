@@ -106,18 +106,20 @@ export class News extends Component {
   render() {
     return (
       <>
-        <h1 style={{ marginTop: "124px" }} className="text-center">
+        <hr style={{ marginTop: "140px" }} />
+        <h1 style={{ marginTop: "4px" }} className="text-center">
           Khabarnama- Top {this.props.category} Headlines
         </h1>
         <div
           style={{
             fontFamily: "georgia,Times New Roman,serif",
-            marginBottom: "40px",
+            marginBottom: "5px",
           }}
           className="text-center"
         >
           Democracy dies in darkness
         </div>
+        <hr style={{ marginBottom: "40px" }} />
         {this.state.loading && <Spinner />}
 
         <InfiniteScroll
