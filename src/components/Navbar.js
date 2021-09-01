@@ -88,7 +88,7 @@ export class Navbar extends Component {
     console.log(this.state.active);
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
               Khabarnama

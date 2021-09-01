@@ -8,7 +8,7 @@ export class Spinner extends Component {
         <img
           src={loader}
           alt="loading"
-          style={{ height: "150px", width: "150px", margin: "auto auto" }}
+          style={{ height: "150px", width: "150px", marginBottom: "200px" }}
         />
       </div>
     );

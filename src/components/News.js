@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export class News extends Component {
   static defaultProps = {
@@ -18,7 +19,7 @@ export class News extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { articles: [], loading: false, page: 1 };
+    this.state = { articles: [], loading: false, page: 1, totalResults: 0 };
     document.title = this.props.title;
   }
 
@@ -39,14 +40,16 @@ export class News extends Component {
   }
   //runs after render()and render() runs after constructor
   updatePage = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=f096cc4f663c4c8ea5a080d0ec79bfe3&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    this.props.setProgress(16);
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
-
+    this.props.setProgress(100);
     this.setState({
       page: this.state.page,
-      articles: parsedData.articles,
+      articles: this.state.articles.concat(parsedData.articles),
+      totalArticles: parsedData.totalResults,
       loading: false,
     });
   };
@@ -65,6 +68,11 @@ export class News extends Component {
       //   articles: parsedData.articles,
       //   loading: false,
     });
+    this.updatePage();
+  };
+
+  fetchMoreData = () => {
+    this.setState({ page: this.state.page + 1 });
     this.updatePage();
   };
 
@@ -97,8 +105,8 @@ export class News extends Component {
 
   render() {
     return (
-      <div className="container my-3">
-        <h1 style={{ margin: "24px 0px" }} className="text-center">
+      <>
+        <h1 style={{ marginTop: "124px" }} className="text-center">
           Khabarnama- Top {this.props.category} Headlines
         </h1>
         <div
@@ -110,43 +118,53 @@ export class News extends Component {
         >
           Democracy dies in darkness
         </div>
-        <div className="row">
-          {this.state.loading && <Spinner />}
-          {!this.state.loading &&
-            this.state.articles.map((element) => {
-              return (
-                <div
-                  className="col-md-4 "
-                  key={element.url ? element.url : "https://www.aajtak.com"}
-                >
-                  <NewsItem
-                    title={element.title ? element.title.slice(0, 40) : ""}
-                    description={
-                      element.description
-                        ? element.description.slice(0, 90)
-                        : ""
-                    }
-                    author={element.author ? element.author : "Unknown"}
-                    source={
-                      element.source.name
-                        ? element.source.name
-                        : "Unknown source"
-                    }
-                    date={
-                      element.publishedAt ? element.publishedAt : "not known"
-                    }
-                    imageUrl={
-                      element.urlToImage
-                        ? element.urlToImage
-                        : "https://www.borouge.com/MediaCentre/Images1/News-Website-banner-V1.JPG"
-                    }
-                    newsUrl={element.url ? element.url : null}
-                  />
-                </div>
-              );
-            })}
-        </div>
-        <div className="container d-flex justify-content-between">
+        {this.state.loading && <Spinner />}
+
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length !== this.state.totalResults}
+          loader={<Spinner />}
+        >
+          <div className="container">
+            <div className="row">
+              {this.state.articles.map((element) => {
+                return (
+                  <div
+                    className="col-md-4 "
+                    key={element.url ? element.url : "https://www.aajtak.com"}
+                  >
+                    <NewsItem
+                      title={element.title ? element.title.slice(0, 40) : ""}
+                      description={
+                        element.description
+                          ? element.description.slice(0, 90)
+                          : ""
+                      }
+                      author={element.author ? element.author : "Unknown"}
+                      source={
+                        element.source.name
+                          ? element.source.name
+                          : "Unknown source"
+                      }
+                      date={
+                        element.publishedAt ? element.publishedAt : "not known"
+                      }
+                      imageUrl={
+                        element.urlToImage
+                          ? element.urlToImage
+                          : "https://www.borouge.com/MediaCentre/Images1/News-Website-banner-V1.JPG"
+                      }
+                      newsUrl={element.url ? element.url : null}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </InfiniteScroll>
+
+        {/* <div className="container d-flex justify-content-between">
           <button
             disabled={this.state.page <= 1}
             onClick={this.handlePreviousClick}
@@ -166,8 +184,8 @@ export class News extends Component {
           >
             Next &rarr;
           </button>
-        </div>
-      </div>
+        </div> */}
+      </>
     );
   }
 }
